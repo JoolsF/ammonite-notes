@@ -43,6 +43,6 @@ def takeWhile[F[_], O](s: Stream[F, O], cond: O => Boolean) = {
 
 // Exercises Stream Transforming - implement intersperse
 def intersperse[F[_], O](s: Stream[F, O], e: O): Stream[F, O] =
-  s.flatMap(x => Stream.empty)
+  s.flatMap(x => Stream(x,e))
 
 println(intersperse(Stream.range(1,10), 0).toList)
