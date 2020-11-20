@@ -37,29 +37,34 @@ organismList :+ new Object
 
 
 /*
- If B subtype of A then ThingCovariant[B]is a subtype of ThingCovariant[A].
- ThingCovariant[B] can be substituted for ThingCovariant[A] 
+ If B subtype of A then BoxCovariant[B]is a subtype of BoxCovariant[A].
+ BoxCovariant[B] can be substituted for BoxCovariant[A] 
 */
-class ThingCovariant[+A] (value: A) {
-  def convert[B >: A](b: B) = new ThingContravariant(b)
+class BoxCovariant[+A] (value: A) {
+  def convert[B >: A](b: B) = new BoxCovariant(b)
 }
 
-//ThingCovariant[Organism]
-val thingConOrganism = new ThingCovariant(new Organism())
-//ThingCovariant[Organism]
-thingConOrganism.convert(new Animal())
+//BoxCovariant[Organism]
+val boxCovOrganism = new BoxCovariant(new Organism())
+//BoxCovariant[Organism]
+boxCovOrganism.convert(new Animal())
+
+val animalBox = boxCovOrganism.convert(new Animal())
+
+
 
 /*
- If B subtype of A then ThingCovariant[A] is a subtype of ThingCovariant[B].
+ If B subtype of A then BoxConvariant[A] is a subtype of BoxConvariant[B].
  This reverses the sub-typing relationship of A and B
- ThingCovariant[A] cannot be substituted with ThingCovariant[B]
+ BoxConvariant[A] cannot be substituted with BoxConvariant[B]
 */
-class ThingContravariant[-A] (value: A) {
+class BoxContravariant[-A] (value: A) {
   // B refers to subtype of A
-  def convert[B <: A](b: B) = new ThingContravariant(b)
+  def convert[B <: A](b: B) = new BoxContravariant(b)
 }
 
-//ThingCovariant[Organism]
-val thingCovOrganism = new ThingContravariant(new Organism())
-//ThingCovariant[Animal]
-thingCovOrganism.convert(new Animal())
+//BoxConvariant[Organism]
+val boxConOrganism = new BoxContravariant(new Organism())
+//BoxConvariant[Animal]
+boxConOrganism.convert(new Animal())
+
