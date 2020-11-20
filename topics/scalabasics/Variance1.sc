@@ -37,10 +37,17 @@ organismList :+ new Object
 
 
 /*
- If B subtype of A then BoxCovariant[B]is a subtype of BoxCovariant[A].
+ If B subtype of A then BoxCovariant[B] is a subtype of BoxCovariant[A].
  BoxCovariant[B] can be substituted for BoxCovariant[A] 
+
+ A is Covariant meaning that for any 'B <: A' Box[B] can be seen as Box[A]
+
+ Therefore in convert we must set [B >: A] to refer to the supertype
+
 */
 class BoxCovariant[+A] (value: A) {
+  // Because of Scala type inference we can pass in a B that is subtype of A and it will A type
+  // It does not mean that B must be a sub-type of A.  Compiler will find the common super type
   def convert[B >: A](b: B) = new BoxCovariant(b)
 }
 
@@ -49,8 +56,14 @@ val boxCovOrganism = new BoxCovariant(new Organism())
 //BoxCovariant[Organism]
 boxCovOrganism.convert(new Animal())
 
-val animalBox = boxCovOrganism.convert(new Animal())
+//A problem with the above
 
+class Dog() extends Animal
+
+val boxCovCat = new BoxCovariant(new Cat())
+val boxAnimal: BoxCovariant[Animal] = boxCovCat
+// We've put a dog in a cat box!
+val dogBox = boxAnimal.convert(new Dog())
 
 
 /*
@@ -59,7 +72,7 @@ val animalBox = boxCovOrganism.convert(new Animal())
  BoxConvariant[A] cannot be substituted with BoxConvariant[B]
 */
 class BoxContravariant[-A] (value: A) {
-  // B refers to subtype of A
+  //Compiler
   def convert[B <: A](b: B) = new BoxContravariant(b)
 }
 
