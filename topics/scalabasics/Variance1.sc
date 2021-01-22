@@ -46,8 +46,8 @@ organismList :+ new Object
 
 */
 class BoxCovariant[+A] (value: A) {
-  // Because of Scala type inference we can pass in a B that is subtype of A and it will A type
-  // It does not mean that B must be a sub-type of A.  Compiler will find the common super type
+  // Because of Scala type inference we can pass in a B that is subtype of A and it will use A's type.
+  // It does not mean that B must be a super type of A.  Compiler will find the common super type.
   def convert[B >: A](b: B) = new BoxCovariant(b)
 }
 
